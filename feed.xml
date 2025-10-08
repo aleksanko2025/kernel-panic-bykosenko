@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-10-08T00:22:26+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Kernel Panic by Kosenko</title><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><entry><title type="html">Instalación MongoDB (Debian 13)</title><link href="http://localhost:4000/posts/math-examples/" rel="alternate" type="text/html" title="Instalación MongoDB (Debian 13)" /><published>2025-10-08T00:00:00+02:00</published><updated>2025-10-08T00:00:00+02:00</updated><id>http://localhost:4000/posts/math-examples</id><content type="html" xml:base="http://localhost:4000/posts/math-examples/"><![CDATA[<p><img src="https://imgs.search.brave.com/rIljDd3e-JZc7DhL7Hs79Ut1ctqPYeMwviiERXYrfo8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9yYXcu/Z2l0aHVidXNlcmNv/bnRlbnQuY29tL0pv/bkRvdHNveS9WZWN0/b3ItTG9nby9tYXN0/ZXIvTG9nb3MvbW9u/Z29kYi9Nb25nb0RC/LnN2Zw" alt="alt" /></p>
+
+<h1 id="instalación-de-servidor-mongodb">Instalación de servidor MongoDB</h1>
+
+<p>Un pequeño tutorial para la instalación de MongoDB bajo Debian 13 (trixie).</p>
+
+<h2 id="instalación-de-paquetería-necesaria">Instalación de paquetería necesaria</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt install curl gnupg
+</code></pre></div></div>
+
+<h2 id="importamos-clave-gpg-al-no-estar-mongo-en-los-repositorios-oficiales-de-debian">Importamos clave GPG (al no estar Mongo en los repositorios oficiales de Debian)</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -fsSL https://pgp.mongodb.com/server-8.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
+</code></pre></div></div>
+
+<h2 id="añadimos-el-repositorios-al-sources-list">Añadimos el repositorios al sources list</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+</code></pre></div></div>
+
+<h2 id="instalamos-los-paquetes-de-mongodb">Instalamos los paquetes de MongoDB</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt update
+sudo apt install -y mongodb-org
+</code></pre></div></div>
+
+<h2 id="aseguramos-que-el-servicio-inicie-al-arrancar">Aseguramos que el servicio inicie al arrancar</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl enable mongod.service
+</code></pre></div></div>
+
+<h2 id="acceder-a-la-shell-de-mongo">Acceder a la shell de Mongo</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongosh
+</code></pre></div></div>]]></content><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><category term="Bases de Datos" /><category term="mongodb" /><category term="2ºASIR" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Instalación GNS3 bajo Debian 12</title><link href="http://localhost:4000/posts/the-purpose-of-education/" rel="alternate" type="text/html" title="Instalación GNS3 bajo Debian 12" /><published>2025-10-07T00:00:00+02:00</published><updated>2025-10-07T00:00:00+02:00</updated><id>http://localhost:4000/posts/the-purpose-of-education</id><content type="html" xml:base="http://localhost:4000/posts/the-purpose-of-education/"><![CDATA[<p><img src="https://imgs.search.brave.com/vdkaF7loGk4diMnkGXVnQzN_i7pWbK7Rd-g6dhz7yCw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kb2Nz/LmduczMuY29tL2lt/Zy9sb2dvY29sb3Vy/LnBuZw" alt="alt" /></p>
+
+<h1 id="instalación-de-gns3-y-componentes">Instalación de GNS3 y componentes</h1>
+
+<h2 id="paquetes-necesarios-para-la-instalación">Paquetes necesarios para la instalación</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>python3 python3-pip python3-pyqt5 python3-pyqt5.qtwebsockets python3-pyqt5.qtsvg git make qemu-kvm qemu-utils libvirt-clients libvirt-daemon-system cmake libpcap-dev build-essential libelf-dev
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="instalación-de-ubridge">Instalación de UBRIDGE</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/GNS3/ubridge.git
+<span class="nb">cd </span>ubridge
+make
+<span class="nb">sudo </span>make <span class="nb">install
+cd</span> ..
+<span class="nb">sudo </span>setcap cap_net_admin,cap_net_raw<span class="o">=</span>ep /usr/local/bin/ubridge
+<span class="nb">rm</span> <span class="nt">-rf</span> ubridge
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="instalación-de-dynamips">Instalación de DYNAMIPS</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/GNS3/dynamips.git
+<span class="nb">cd </span>dynamips
+<span class="nb">mkdir </span>build
+<span class="nb">cd </span>build
+cmake ..
+make
+<span class="nb">sudo </span>make <span class="nb">install
+sudo </span>setcap cap_net_admin,cap_net_raw<span class="o">=</span>ep /usr/local/bin/dynamips
+<span class="nb">cd</span> ../..
+<span class="nb">rm</span> <span class="nt">-rf</span> dynamips
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="instalación-de-vpcs">Instalación de VPCS</h2>
+
+<p>Instalación estándar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>vpcs
+</code></pre></div></div>
+
+<p>Si hay error con la versión (borrar binario previo):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo rm</span> <span class="nt">-f</span> /usr/bin/vpcs /usr/local/bin/vpcs
+</code></pre></div></div>
+
+<p>Compilación manual:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/GNS3/vpcs.git
+<span class="nb">cd </span>vpcs/src
+
+<span class="nv">rgetopt</span><span class="o">=</span><span class="s1">'int getopt(int argc, char *const *argv, const char *optstr);'</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"s/^int getopt.*/</span><span class="nv">$rgetopt</span><span class="s2">/"</span> getopt.h
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/i386/x86_64/'</span> Makefile.linux
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/-s -static//'</span> Makefile.linux
+
+make <span class="nt">-f</span> Makefile.linux
+strip <span class="nt">--strip-unneeded</span> vpcs
+<span class="nb">sudo mv </span>vpcs /usr/local/bin
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="creación-del-entorno-virtual">Creación del entorno virtual</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>gns3-project
+<span class="nb">cd </span>gns3-project
+python3 <span class="nt">-m</span> venv <span class="nb">.</span>
+<span class="nb">source </span>bin/activate
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="instalación-dentro-del-entorno-virtual">Instalación dentro del entorno virtual</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>gns3-gui gns3-server
+</code></pre></div></div>
+
+<h2 id="arrancar-la-aplicación">Arrancar la aplicación</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gns3
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="solución-de-errores-comunes">Solución de errores comunes</h2>
+
+<h3 id="error-al-iniciar-sip-o-pyqt5">Error al iniciar SIP o PyQt5</h3>
+
+<p>Si aparece un error relacionado con <strong>SIP</strong> o <strong>PyQt5</strong>, ejecutar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>sip PyQt5
+</code></pre></div></div>
+
+<h3 id="error-con-la-consola-xterm">Error con la consola XTERM</h3>
+
+<p>Instalar <strong>xterm</strong> fuera del entorno virtual:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>xterm
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="salir-del-entorno-virtual">Salir del entorno virtual</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deactivate
+</code></pre></div></div>]]></content><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><category term="Redes" /><category term="GNS3" /><category term="1ºASIR" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Jekyll Markdown</title><link href="http://localhost:4000/posts/jekyll-markdown/" rel="alternate" type="text/html" title="Jekyll Markdown" /><published>2025-10-07T00:00:00+02:00</published><updated>2025-10-07T00:00:00+02:00</updated><id>http://localhost:4000/posts/jekyll-markdown</id><content type="html" xml:base="http://localhost:4000/posts/jekyll-markdown/"><![CDATA[<p>El texto puede ser <strong>negrita</strong>, <em>cursiva</em>, <del>tachado</del> o <code class="language-plaintext highlighter-rouge">palabra clave</code>.</p>
+
+<p><a href="./another-page.html">Enlace a otra página</a>.</p>
+
+<p>Debe haber espacio en blanco entre párrafos.</p>
+
+<p>Debe haber espacio en blanco entre párrafos. Recomendamos incluir un README o un archivo con información sobre tu proyecto.</p>
+
+<h4 id="imagen">Imagen</h4>
+
+<p>Las imágenes se pueden hacer clic para ampliarlas :)</p>
+
+<p><img src="https://picsum.photos/1366/768" alt="Imagen de ejemplo 1" /><br />
+<img src="https://picsum.photos/1200/400" alt="Imagen de ejemplo 2" /></p>
+
+<h1 id="encabezado-1">Encabezado 1</h1>
+
+<p>Este es un párrafo normal que sigue a un encabezado. GitHub es una plataforma de alojamiento de código para control de versiones y colaboración. Permite que tú y otros trabajen juntos en proyectos desde cualquier lugar.</p>
+
+<h2 id="encabezado-2">Encabezado 2</h2>
+
+<blockquote>
+  <p>Esta es una cita en bloque que sigue a un encabezado.</p>
+
+  <p>Cuando algo es lo suficientemente importante, lo haces incluso si las probabilidades no están a tu favor.</p>
+</blockquote>
+
+<h3 id="encabezado-3">Encabezado 3</h3>
+
+<blockquote>
+  <p>Esta es otra cita en bloque que sigue al encabezado 3</p>
+</blockquote>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Código JavaScript con resaltado de sintaxis.</span>
+<span class="kd">var</span> <span class="nx">fun</span> <span class="o">=</span> <span class="kd">function</span> <span class="nf">lang</span><span class="p">(</span><span class="nx">l</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">dateformat</span><span class="p">.</span><span class="nx">i18n</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">./lang/</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">l</span><span class="p">);</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Código Ruby con resaltado de sintaxis</span>
+<span class="no">GitHubPages</span><span class="o">::</span><span class="no">Dependencies</span><span class="p">.</span><span class="nf">gems</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">gem</span><span class="p">,</span> <span class="n">version</span><span class="o">|</span>
+  <span class="n">s</span><span class="p">.</span><span class="nf">add_dependency</span><span class="p">(</span><span class="n">gem</span><span class="p">,</span> <span class="s2">"= </span><span class="si">#{</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h4 id="encabezado-4">Encabezado 4</h4>
+
+<ul>
+  <li>Esta es una lista no ordenada que sigue a un encabezado.</li>
+  <li>Esta es una lista no ordenada que sigue a un encabezado.</li>
+  <li>Esta es una lista no ordenada que sigue a un encabezado.</li>
+</ul>
+
+<h5 id="encabezado-5">Encabezado 5</h5>
+
+<ol>
+  <li>Esta es una lista ordenada que sigue a un encabezado.</li>
+  <li>Esta es una lista ordenada que sigue a un encabezado.</li>
+  <li>Esta es una lista ordenada que sigue a un encabezado.</li>
+</ol>
+
+<h6 id="encabezado-6">Encabezado 6</h6>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">encabezado1</th>
+      <th style="text-align: left">encabezado dos</th>
+      <th style="text-align: left">tres</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">ok</td>
+      <td style="text-align: left">buenos peces suecos</td>
+      <td style="text-align: left">bien</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">sin existencias</td>
+      <td style="text-align: left">buenos y muchos</td>
+      <td style="text-align: left">bien</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">ok</td>
+      <td style="text-align: left">buenas <code class="language-plaintext highlighter-rouge">oreos</code></td>
+      <td style="text-align: left">hmm</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">ok</td>
+      <td style="text-align: left">buen <code class="language-plaintext highlighter-rouge">zoute</code> drop</td>
+      <td style="text-align: left">rico</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="hay-una-regla-horizontal-debajo-de-esto">Hay una regla horizontal debajo de esto.</h3>
+
+<hr />
+
+<h3 id="aquí-hay-una-lista-no-ordenada">Aquí hay una lista no ordenada:</h3>
+
+<ul>
+  <li>Elemento foo</li>
+  <li>Elemento bar</li>
+  <li>Elemento baz</li>
+  <li>Elemento zip</li>
+</ul>
+
+<h3 id="y-una-lista-ordenada">Y una lista ordenada:</h3>
+
+<ol>
+  <li>Elemento uno
+    <ol>
+      <li>Elemento uno</li>
+      <li>Elemento dos
+        <ol>
+          <li>Elemento uno</li>
+          <li>Elemento dos</li>
+          <li>Elemento tres</li>
+        </ol>
+      </li>
+      <li>Elemento tres</li>
+    </ol>
+  </li>
+  <li>Elemento cuatro</li>
+  <li>Elemento dos</li>
+  <li>Elemento tres</li>
+  <li>Elemento cuatro</li>
+</ol>
+
+<h3 id="y-una-lista-anidada">Y una lista anidada:</h3>
+
+<ul>
+  <li>elemento nivel 1
+    <ul>
+      <li>elemento nivel 2</li>
+      <li>elemento nivel 2
+        <ul>
+          <li>elemento nivel 3</li>
+          <li>elemento nivel 3</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>elemento nivel 1
+    <ul>
+      <li>elemento nivel 2</li>
+      <li>elemento nivel 2</li>
+      <li>elemento nivel 2</li>
+    </ul>
+  </li>
+  <li>elemento nivel 1
+    <ul>
+      <li>elemento nivel 2</li>
+      <li>elemento nivel 2</li>
+    </ul>
+  </li>
+  <li>elemento nivel 1</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Los bloques de código largos de una sola línea no deben ajustarse. Deben desplazarse horizontalmente si son demasiado largos. Los bloques de código largos de una sola línea no deben ajustarse. Deben desplazarse horizontalmente si son demasiado largos.
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>El elemento final.
+</code></pre></div></div>]]></content><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><category term="jekyll" /><category term="Test Post" /><category term="first post" /><summary type="html"><![CDATA[El texto puede ser negrita, cursiva, tachado o palabra clave.]]></summary></entry></feed>

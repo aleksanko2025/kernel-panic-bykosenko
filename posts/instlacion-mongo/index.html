@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kernel Panic by Kosenko | Instalación MongoDB (Debian 13)</title>
+  
+  <link rel="stylesheet" href="/assets/css/post.css" />
+  <link rel="stylesheet" href="/assets/css/syntax.css" />
+  
+  <link rel="stylesheet" href="/assets/css/common.css" />
+  <script src="/assets/js/categories.js"></script>
+  <script src="/assets/js/copy-code.js"></script>
+  <script>
+    const currentTheme = localStorage.getItem("theme");
+    if (currentTheme) {
+      document.documentElement.setAttribute(
+        "data-theme",
+        localStorage.getItem("theme")
+      );
+    }
+  </script>
+  
+  <script defer src="/assets/js/lbox.js"></script>
+  
+
+  <!-- MathJax Configuration -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [
+          ["$", "$"],
+          ["\\(", "\\)"],
+        ],
+        displayMath: [
+          ["$$", "$$"],
+          ["\\[", "\\]"],
+        ],
+        processEscapes: true,
+      },
+      svg: {
+        fontCache: "global",
+      },
+    };
+  </script>
+  <script
+    type="text/javascript"
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  ></script>
+</head>
+
+  <body>
+    <main>
+      <header>
+  <a class="site-title" href="/">Kernel Panic by Kosenko</a>
+  <!-- dark/light mode -->
+  <span id="dark-mode-toggle" style="cursor: pointer">
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+      height="1.2em"
+      width="1.2em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13V2a6 6 0 1 1 0 12z"
+      ></path>
+    </svg>
+  </span>
+</header>
+
+      <section class="article">
+        <div class="article-header">
+          <h2 class="article-title">Instalación MongoDB (Debian 13)</h2>
+          <small class="date">08 Oct 2025</small>
+          <div class="categories">
+            
+            <a href="#!" class="category">Bases de Datos</a>
+            
+            <a href="#!" class="category">mongodb</a>
+            
+            <a href="#!" class="category">2ºASIR</a>
+            
+          </div>
+        </div>
+        <div class="content"><p><img src="https://imgs.search.brave.com/rIljDd3e-JZc7DhL7Hs79Ut1ctqPYeMwviiERXYrfo8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9yYXcu/Z2l0aHVidXNlcmNv/bnRlbnQuY29tL0pv/bkRvdHNveS9WZWN0/b3ItTG9nby9tYXN0/ZXIvTG9nb3MvbW9u/Z29kYi9Nb25nb0RC/LnN2Zw" alt="alt" /></p>
+
+<h1 id="instalación-de-servidor-mongodb">Instalación de servidor MongoDB</h1>
+
+<p>Un pequeño tutorial para la instalación de MongoDB bajo Debian 13 (trixie).</p>
+
+<h2 id="instalación-de-paquetería-necesaria">Instalación de paquetería necesaria</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt install curl gnupg
+</code></pre></div></div>
+
+<h2 id="importamos-clave-gpg-al-no-estar-mongo-en-los-repositorios-oficiales-de-debian">Importamos clave GPG (al no estar Mongo en los repositorios oficiales de Debian)</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -fsSL https://pgp.mongodb.com/server-8.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
+</code></pre></div></div>
+
+<h2 id="añadimos-el-repositorios-al-sources-list">Añadimos el repositorios al sources list</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+</code></pre></div></div>
+
+<h2 id="instalamos-los-paquetes-de-mongodb">Instalamos los paquetes de MongoDB</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt update
+sudo apt install -y mongodb-org
+</code></pre></div></div>
+
+<h2 id="aseguramos-que-el-servicio-inicie-al-arrancar">Aseguramos que el servicio inicie al arrancar</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl enable mongod.service
+</code></pre></div></div>
+
+<h2 id="acceder-a-la-shell-de-mongo">Acceder a la shell de Mongo</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongosh
+</code></pre></div></div>
+</div>
+      </section>
+      <footer>
+  <p>&copy; 1998 - 2025 | Kernel Panic by Kosenko</p>
+</footer>
+<script src="/assets/js/mode.js" defer></script>
+
+    </main>
+    <section id="category-modal-bg"></section>
+<section id="category-modal">
+  <h1 id="category-modal-title"></h1>
+  <section id="category-modal-content"></section>
+</section>
+
+  </body>
+</html>

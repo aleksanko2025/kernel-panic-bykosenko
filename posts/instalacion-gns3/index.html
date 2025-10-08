@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kernel Panic by Kosenko | Instalación GNS3 bajo Debian 12</title>
+  
+  <link rel="stylesheet" href="/assets/css/post.css" />
+  <link rel="stylesheet" href="/assets/css/syntax.css" />
+  
+  <link rel="stylesheet" href="/assets/css/common.css" />
+  <script src="/assets/js/categories.js"></script>
+  <script src="/assets/js/copy-code.js"></script>
+  <script>
+    const currentTheme = localStorage.getItem("theme");
+    if (currentTheme) {
+      document.documentElement.setAttribute(
+        "data-theme",
+        localStorage.getItem("theme")
+      );
+    }
+  </script>
+  
+  <script defer src="/assets/js/lbox.js"></script>
+  
+
+  <!-- MathJax Configuration -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [
+          ["$", "$"],
+          ["\\(", "\\)"],
+        ],
+        displayMath: [
+          ["$$", "$$"],
+          ["\\[", "\\]"],
+        ],
+        processEscapes: true,
+      },
+      svg: {
+        fontCache: "global",
+      },
+    };
+  </script>
+  <script
+    type="text/javascript"
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  ></script>
+</head>
+
+  <body>
+    <main>
+      <header>
+  <a class="site-title" href="/">Kernel Panic by Kosenko</a>
+  <!-- dark/light mode -->
+  <span id="dark-mode-toggle" style="cursor: pointer">
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+      height="1.2em"
+      width="1.2em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13V2a6 6 0 1 1 0 12z"
+      ></path>
+    </svg>
+  </span>
+</header>
+
+      <section class="article">
+        <div class="article-header">
+          <h2 class="article-title">Instalación GNS3 bajo Debian 12</h2>
+          <small class="date">08 Oct 2025</small>
+          <div class="categories">
+            
+            <a href="#!" class="category">Redes</a>
+            
+            <a href="#!" class="category">GNS3</a>
+            
+            <a href="#!" class="category">1ºASIR</a>
+            
+          </div>
+        </div>
+        <div class="content"><p><img src="https://imgs.search.brave.com/vdkaF7loGk4diMnkGXVnQzN_i7pWbK7Rd-g6dhz7yCw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kb2Nz/LmduczMuY29tL2lt/Zy9sb2dvY29sb3Vy/LnBuZw" alt="alt" /></p>
+
+<h1 id="instalación-de-gns3-y-componentes">Instalación de GNS3 y componentes</h1>
+
+<h2 id="paquetes-necesarios-para-la-instalación">Paquetes necesarios para la instalación</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>python3 python3-pip python3-pyqt5 python3-pyqt5.qtwebsockets python3-pyqt5.qtsvg git make qemu-kvm qemu-utils libvirt-clients libvirt-daemon-system cmake libpcap-dev build-essential libelf-dev
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="instalación-de-ubridge">Instalación de UBRIDGE</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/GNS3/ubridge.git
+<span class="nb">cd </span>ubridge
+make
+<span class="nb">sudo </span>make <span class="nb">install
+cd</span> ..
+<span class="nb">sudo </span>setcap cap_net_admin,cap_net_raw<span class="o">=</span>ep /usr/local/bin/ubridge
+<span class="nb">rm</span> <span class="nt">-rf</span> ubridge
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="instalación-de-dynamips">Instalación de DYNAMIPS</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/GNS3/dynamips.git
+<span class="nb">cd </span>dynamips
+<span class="nb">mkdir </span>build
+<span class="nb">cd </span>build
+cmake ..
+make
+<span class="nb">sudo </span>make <span class="nb">install
+sudo </span>setcap cap_net_admin,cap_net_raw<span class="o">=</span>ep /usr/local/bin/dynamips
+<span class="nb">cd</span> ../..
+<span class="nb">rm</span> <span class="nt">-rf</span> dynamips
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="instalación-de-vpcs">Instalación de VPCS</h2>
+
+<p>Instalación estándar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>vpcs
+</code></pre></div></div>
+
+<p>Si hay error con la versión (borrar binario previo):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo rm</span> <span class="nt">-f</span> /usr/bin/vpcs /usr/local/bin/vpcs
+</code></pre></div></div>
+
+<p>Compilación manual:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/GNS3/vpcs.git
+<span class="nb">cd </span>vpcs/src
+
+<span class="nv">rgetopt</span><span class="o">=</span><span class="s1">'int getopt(int argc, char *const *argv, const char *optstr);'</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"s/^int getopt.*/</span><span class="nv">$rgetopt</span><span class="s2">/"</span> getopt.h
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/i386/x86_64/'</span> Makefile.linux
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/-s -static//'</span> Makefile.linux
+
+make <span class="nt">-f</span> Makefile.linux
+strip <span class="nt">--strip-unneeded</span> vpcs
+<span class="nb">sudo mv </span>vpcs /usr/local/bin
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="creación-del-entorno-virtual">Creación del entorno virtual</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>gns3-project
+<span class="nb">cd </span>gns3-project
+python3 <span class="nt">-m</span> venv <span class="nb">.</span>
+<span class="nb">source </span>bin/activate
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="instalación-dentro-del-entorno-virtual">Instalación dentro del entorno virtual</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>gns3-gui gns3-server
+</code></pre></div></div>
+
+<h2 id="arrancar-la-aplicación">Arrancar la aplicación</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gns3
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="solución-de-errores-comunes">Solución de errores comunes</h2>
+
+<h3 id="error-al-iniciar-sip-o-pyqt5">Error al iniciar SIP o PyQt5</h3>
+
+<p>Si aparece un error relacionado con <strong>SIP</strong> o <strong>PyQt5</strong>, ejecutar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>sip PyQt5
+</code></pre></div></div>
+
+<h3 id="error-con-la-consola-xterm">Error con la consola XTERM</h3>
+
+<p>Instalar <strong>xterm</strong> fuera del entorno virtual:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>xterm
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="salir-del-entorno-virtual">Salir del entorno virtual</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deactivate
+</code></pre></div></div>
+</div>
+      </section>
+      <footer>
+  <p>&copy; 1998 - 2025 | Kernel Panic by Kosenko</p>
+</footer>
+<script src="/assets/js/mode.js" defer></script>
+
+    </main>
+    <section id="category-modal-bg"></section>
+<section id="category-modal">
+  <h1 id="category-modal-title"></h1>
+  <section id="category-modal-content"></section>
+</section>
+
+  </body>
+</html>

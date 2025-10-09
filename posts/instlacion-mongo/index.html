@@ -96,7 +96,7 @@
 
 <h2 id="instalación-de-paquetería-necesaria">Instalación de paquetería necesaria</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt install curl gnupg
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>curl gnupg
 </code></pre></div></div>
 
 <h2 id="importamos-clave-gpg-al-no-estar-mongo-en-los-repositorios-oficiales-de-debian">Importamos clave GPG (al no estar Mongo en los repositorios oficiales de Debian)</h2>
@@ -104,25 +104,25 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -fsSL https://pgp.mongodb.com/server-8.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
 </code></pre></div></div>
 
-<h2 id="añadimos-el-repositorios-al-sources-list">Añadimos el repositorios al sources list</h2>
+<h2 id="añadimos-los-repositorios-al-sources-list">Añadimos los repositorios al sources list</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main"</span> | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/mongodb-org-8.0.list
 </code></pre></div></div>
 
 <h2 id="instalamos-los-paquetes-de-mongodb">Instalamos los paquetes de MongoDB</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt update
-sudo apt install -y mongodb-org
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> mongodb-org
 </code></pre></div></div>
 
 <h2 id="aseguramos-que-el-servicio-inicie-al-arrancar">Aseguramos que el servicio inicie al arrancar</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl enable mongod.service
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>mongod.service
 </code></pre></div></div>
 
 <h2 id="acceder-a-la-shell-de-mongo">Acceder a la shell de Mongo</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongosh
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongosh
 </code></pre></div></div>
 </div>
       </section>

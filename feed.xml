@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-10-08T09:34:34+02:00</updated><id>/feed.xml</id><title type="html">Kernel Panic by Kosenko</title><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><entry><title type="html">Instalación GNS3 bajo Debian 12</title><link href="/posts/instalacion-gns3/" rel="alternate" type="text/html" title="Instalación GNS3 bajo Debian 12" /><published>2025-10-08T00:00:00+02:00</published><updated>2025-10-08T00:00:00+02:00</updated><id>/posts/instalacion-gns3</id><content type="html" xml:base="/posts/instalacion-gns3/"><![CDATA[<p><img src="https://imgs.search.brave.com/vdkaF7loGk4diMnkGXVnQzN_i7pWbK7Rd-g6dhz7yCw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kb2Nz/LmduczMuY29tL2lt/Zy9sb2dvY29sb3Vy/LnBuZw" alt="alt" /></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-10-09T13:26:12+02:00</updated><id>/feed.xml</id><title type="html">Kernel Panic by Kosenko</title><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><entry><title type="html">Instalación GNS3 bajo Debian 12</title><link href="/posts/instalacion-gns3/" rel="alternate" type="text/html" title="Instalación GNS3 bajo Debian 12" /><published>2025-10-08T00:00:00+02:00</published><updated>2025-10-08T00:00:00+02:00</updated><id>/posts/instalacion-gns3</id><content type="html" xml:base="/posts/instalacion-gns3/"><![CDATA[<p><img src="https://imgs.search.brave.com/vdkaF7loGk4diMnkGXVnQzN_i7pWbK7Rd-g6dhz7yCw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kb2Nz/LmduczMuY29tL2lt/Zy9sb2dvY29sb3Vy/LnBuZw" alt="alt" /></p>
 
-<h1 id="instalación-de-gns3-y-componentes">Instalación de GNS3 y componentes:</h1>
+<h1 id="instalación-de-gns3-y-componentes">Instalación de GNS3 y componentes</h1>
 
 <h2 id="paquetes-necesarios-para-la-instalación">Paquetes necesarios para la instalación</h2>
 
@@ -84,7 +84,7 @@ python3 <span class="nt">-m</span> venv <span class="nb">.</span>
 
 <h2 id="arrancar-la-aplicación">Arrancar la aplicación</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gns3
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gns3
 </code></pre></div></div>
 
 <hr />
@@ -118,7 +118,7 @@ python3 <span class="nt">-m</span> venv <span class="nb">.</span>
 
 <h2 id="instalación-de-paquetería-necesaria">Instalación de paquetería necesaria</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt install curl gnupg
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>curl gnupg
 </code></pre></div></div>
 
 <h2 id="importamos-clave-gpg-al-no-estar-mongo-en-los-repositorios-oficiales-de-debian">Importamos clave GPG (al no estar Mongo en los repositorios oficiales de Debian)</h2>
@@ -128,23 +128,23 @@ python3 <span class="nt">-m</span> venv <span class="nb">.</span>
 
 <h2 id="añadimos-el-repositorios-al-sources-list">Añadimos el repositorios al sources list</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main"</span> | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/mongodb-org-8.0.list
 </code></pre></div></div>
 
-<h2 id="instalamos-los-paquetes-de-mongodb">Instalamos los paquetes de MongoDB</h2>
+<h2 id="instalamos-los-paquetes-mongodb">Instalamos los paquetes MongoDB</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt update
-sudo apt install -y mongodb-org
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> mongodb-org
 </code></pre></div></div>
 
 <h2 id="aseguramos-que-el-servicio-inicie-al-arrancar">Aseguramos que el servicio inicie al arrancar</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl enable mongod.service
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>mongod.service
 </code></pre></div></div>
 
 <h2 id="acceder-a-la-shell-de-mongo">Acceder a la shell de Mongo</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongosh
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongosh
 </code></pre></div></div>]]></content><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><category term="Bases de Datos" /><category term="mongodb" /><category term="2ºASIR" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Jekyll Markdown</title><link href="/posts/jekyll-markdown/" rel="alternate" type="text/html" title="Jekyll Markdown" /><published>2025-10-07T00:00:00+02:00</published><updated>2025-10-07T00:00:00+02:00</updated><id>/posts/jekyll-markdown</id><content type="html" xml:base="/posts/jekyll-markdown/"><![CDATA[<p>El texto puede ser <strong>negrita</strong>, <em>cursiva</em>, <del>tachado</del> o <code class="language-plaintext highlighter-rouge">palabra clave</code>.</p>
 
 <p><a href="./another-page.html">Enlace a otra página</a>.</p>

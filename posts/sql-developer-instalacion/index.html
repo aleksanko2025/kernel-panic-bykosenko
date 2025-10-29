@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kernel Panic by Kosenko | Instalación SQL Developer y conexión TNS</title>
+  
+
+  <link rel="stylesheet" href="/assets/css/post.css" />
+  <link rel="stylesheet" href="/assets/css/syntax.css" />
+  
+  <link rel="stylesheet" href="/assets/css/common.css" />
+  <link
+    rel="icon"
+    type="image/png"
+    href="/assets/icons/favicon_kpk2.png"
+  />
+  <script src="/assets/js/categories.js"></script>
+  <script src="/assets/js/copy-code.js"></script>
+  <script>
+    const currentTheme = localStorage.getItem("theme");
+    if (currentTheme) {
+      document.documentElement.setAttribute(
+        "data-theme",
+        localStorage.getItem("theme")
+      );
+    }
+  </script>
+  
+  <script defer src="/assets/js/lbox.js"></script>
+  
+
+  <!-- MathJax Configuration -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [
+          ["$", "$"],
+          ["\\(", "\\)"],
+        ],
+        displayMath: [
+          ["$$", "$$"],
+          ["\\[", "\\]"],
+        ],
+        processEscapes: true,
+      },
+      svg: {
+        fontCache: "global",
+      },
+    };
+  </script>
+  <script
+    type="text/javascript"
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  ></script>
+</head>
+
+  <body>
+    <main>
+      <header>
+  <a class="site-title" href="/">Kernel Panic by Kosenko</a>
+  <!-- dark/light mode -->
+  <span id="dark-mode-toggle" style="cursor: pointer">
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+      height="1.2em"
+      width="1.2em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13V2a6 6 0 1 1 0 12z"
+      ></path>
+    </svg>
+  </span>
+</header>
+
+      <section class="article">
+        <div class="article-header">
+          <h2 class="article-title">Instalación SQL Developer y conexión TNS</h2>
+          <small class="date">29 Oct 2025</small>
+          <div class="categories">
+            
+            <a href="#!" class="category">Base de datos</a>
+            
+            <a href="#!" class="category">Oracle</a>
+            
+            <a href="#!" class="category">2ºASIR</a>
+            
+          </div>
+        </div>
+        <div class="content"><h1 id="-instalación">🧩 Instalación</h1>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>openjdk-17-jdk
+</code></pre></div></div>
+
+<p>Descargamos <strong>SQL Developer</strong> desde la página oficial de Oracle:<br />
+👉 <a href="https://www.oracle.com/database/sqldeveloper/technologies/download/">https://www.oracle.com/database/sqldeveloper/technologies/download/</a></p>
+
+<p>Elegimos la opción <strong>“Other Platforms”</strong>.</p>
+
+<p>También podemos hacerlo desde la terminal:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://download.oracle.com/otn_software/java/sqldeveloper/sqldeveloper-24.3.1.347.1826-no-jre.zip
+</code></pre></div></div>
+
+<p>Se descargará un archivo <code class="language-plaintext highlighter-rouge">.zip</code>.<br />
+Lo descomprimimos, lo cual generará un directorio llamado <code class="language-plaintext highlighter-rouge">sqldeveloper</code>.</p>
+
+<p>Para arrancar <strong>SQL Developer</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash sqldeveloper/sqldeveloper.sh
+</code></pre></div></div>
+
+<p><img src="https://i0.wp.com/www.sismonda.com.ar/wp-content/uploads/2020/11/image-2.png?w=606&amp;ssl=1" alt="alt" /></p>
+
+<hr />
+
+<h1 id="-conexión-tns">🔌 Conexión TNS</h1>
+
+<p>Primero comprobamos desde el servidor si el <strong>listener</strong> está activo y vemos el nombre del servicio:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsnrctl status
+</code></pre></div></div>
+
+<p>Esto nos dará una salida similar a la siguiente (ejemplo):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Service "ORCLCDB" has 1 instance(s).
+  Instance "ORCLCDB", status READY, has 1 handler(s) for this service...
+</code></pre></div></div>
+
+<p>Nos quedamos con el nombre de la instancia <strong><code class="language-plaintext highlighter-rouge">ORCLCDB</code></strong>, que necesitaremos luego para configurar la conexión.</p>
+
+<hr />
+
+<h2 id="crear-el-archivo-de-configuración-tns">Crear el archivo de configuración TNS</h2>
+
+<p>En el cliente, creamos un directorio y un fichero <code class="language-plaintext highlighter-rouge">.ora</code> donde definiremos la configuración de la conexión:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> ~/.oracle
+nano ~/.oracle/tnsnames.ora
+</code></pre></div></div>
+
+<p>Dentro del fichero añadimos:</p>
+
+<pre><code class="language-ora">ORCL =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.122.1)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = ORCLCDB)
+    )
+  )
+</code></pre>
+
+<hr />
+
+<h2 id="configurar-conexión-en-sql-developer">Configurar conexión en SQL Developer</h2>
+
+<p>Abrimos <strong>SQL Developer</strong> y vamos a:</p>
+
+<p><strong>Herramientas → Preferencias → Bases de datos → Avanzada</strong></p>
+
+<p>Ahí indicamos la ruta del directorio donde se encuentra el fichero <code class="language-plaintext highlighter-rouge">tnsnames.ora</code>.</p>
+
+<hr />
+
+<h2 id="crear-la-conexión">Crear la conexión</h2>
+
+<p>Creamos una nueva conexión con el alias definido (por ejemplo, <code class="language-plaintext highlighter-rouge">ORCL</code>), el usuario y la contraseña.</p>
+
+<p>Hacemos clic en <strong>Probar</strong>, y si el estado es <strong>Correcto</strong>, damos a <strong>Conectar</strong> y <strong>Guardar la conexión</strong>.</p>
+
+<hr />
+
+<p>Ya podemos acceder a nuestro <strong>servidor Oracle</strong> con el usuario especificado y empezar a trabajar con nuestras <strong>tablas, registros</strong>, etc. 🗃️</p>
+</div>
+      </section>
+      <footer>
+  <p>&copy; 1998 - 2025 | Kernel Panic by Kosenko</p>
+</footer>
+<script src="/assets/js/mode.js" defer></script>
+
+    </main>
+    <section id="category-modal-bg"></section>
+<section id="category-modal">
+  <h1 id="category-modal-title"></h1>
+  <section id="category-modal-content"></section>
+</section>
+
+  </body>
+</html>

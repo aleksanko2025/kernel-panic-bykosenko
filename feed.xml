@@ -1,4 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-10-21T23:17:03+02:00</updated><id>/feed.xml</id><title type="html">Kernel Panic by Kosenko</title><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><entry><title type="html">Plantilla y clonación enlazada KVM/QEMU + libvirt</title><link href="/posts/Creaci%C3%B3n-plantilla-y-clonaci%C3%B3n-enlazada/" rel="alternate" type="text/html" title="Plantilla y clonación enlazada KVM/QEMU + libvirt" /><published>2025-10-12T00:00:00+02:00</published><updated>2025-10-12T00:00:00+02:00</updated><id>/posts/Creaci%C3%B3n-plantilla-y-clonaci%C3%B3n-enlazada</id><content type="html" xml:base="/posts/Creaci%C3%B3n-plantilla-y-clonaci%C3%B3n-enlazada/"><![CDATA[<p><img src="https://pm1.aminoapps.com/6204/eae82405edfa2ffe445941d2e072ade2acfbd518_hq.jpg" alt="alt" /></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-10-29T21:30:54+01:00</updated><id>/feed.xml</id><title type="html">Kernel Panic by Kosenko</title><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><entry><title type="html">Instalación SQL Developer y conexión TNS</title><link href="/posts/sql-developer-instalacion/" rel="alternate" type="text/html" title="Instalación SQL Developer y conexión TNS" /><published>2025-10-29T00:00:00+01:00</published><updated>2025-10-29T00:00:00+01:00</updated><id>/posts/sql-developer-instalacion</id><content type="html" xml:base="/posts/sql-developer-instalacion/"><![CDATA[<h1 id="-instalación">🧩 Instalación</h1>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>openjdk-17-jdk
+</code></pre></div></div>
+
+<p>Descargamos <strong>SQL Developer</strong> desde la página oficial de Oracle:<br />
+👉 <a href="https://www.oracle.com/database/sqldeveloper/technologies/download/">https://www.oracle.com/database/sqldeveloper/technologies/download/</a></p>
+
+<p>Elegimos la opción <strong>“Other Platforms”</strong>.</p>
+
+<p>También podemos hacerlo desde la terminal:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://download.oracle.com/otn_software/java/sqldeveloper/sqldeveloper-24.3.1.347.1826-no-jre.zip
+</code></pre></div></div>
+
+<p>Se descargará un archivo <code class="language-plaintext highlighter-rouge">.zip</code>.<br />
+Lo descomprimimos, lo cual generará un directorio llamado <code class="language-plaintext highlighter-rouge">sqldeveloper</code>.</p>
+
+<p>Para arrancar <strong>SQL Developer</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash sqldeveloper/sqldeveloper.sh
+</code></pre></div></div>
+
+<p><img src="https://i0.wp.com/www.sismonda.com.ar/wp-content/uploads/2020/11/image-2.png?w=606&amp;ssl=1" alt="alt" /></p>
+
+<hr />
+
+<h1 id="-conexión-tns">🔌 Conexión TNS</h1>
+
+<p>Primero comprobamos desde el servidor si el <strong>listener</strong> está activo y vemos el nombre del servicio:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsnrctl status
+</code></pre></div></div>
+
+<p>Esto nos dará una salida similar a la siguiente (ejemplo):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Service "ORCLCDB" has 1 instance(s).
+  Instance "ORCLCDB", status READY, has 1 handler(s) for this service...
+</code></pre></div></div>
+
+<p>Nos quedamos con el nombre de la instancia <strong><code class="language-plaintext highlighter-rouge">ORCLCDB</code></strong>, que necesitaremos luego para configurar la conexión.</p>
+
+<hr />
+
+<h2 id="crear-el-archivo-de-configuración-tns">Crear el archivo de configuración TNS</h2>
+
+<p>En el cliente, creamos un directorio y un fichero <code class="language-plaintext highlighter-rouge">.ora</code> donde definiremos la configuración de la conexión:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> ~/.oracle
+nano ~/.oracle/tnsnames.ora
+</code></pre></div></div>
+
+<p>Dentro del fichero añadimos:</p>
+
+<pre><code class="language-ora">ORCL =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.122.1)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = ORCLCDB)
+    )
+  )
+</code></pre>
+
+<hr />
+
+<h2 id="configurar-conexión-en-sql-developer">Configurar conexión en SQL Developer</h2>
+
+<p>Abrimos <strong>SQL Developer</strong> y vamos a:</p>
+
+<p><strong>Herramientas → Preferencias → Bases de datos → Avanzada</strong></p>
+
+<p>Ahí indicamos la ruta del directorio donde se encuentra el fichero <code class="language-plaintext highlighter-rouge">tnsnames.ora</code>.</p>
+
+<hr />
+
+<h2 id="crear-la-conexión">Crear la conexión</h2>
+
+<p>Creamos una nueva conexión con el alias definido (por ejemplo, <code class="language-plaintext highlighter-rouge">ORCL</code>), el usuario y la contraseña.</p>
+
+<p>Hacemos clic en <strong>Probar</strong>, y si el estado es <strong>Correcto</strong>, damos a <strong>Conectar</strong> y <strong>Guardar la conexión</strong>.</p>
+
+<hr />
+
+<p>Ya podemos acceder a nuestro <strong>servidor Oracle</strong> con el usuario especificado y empezar a trabajar con nuestras <strong>tablas, registros</strong>, etc. 🗃️</p>]]></content><author><name>Aleksandr Kosenko</name><email>alexanderkosenko14@gmail.com</email></author><category term="Base de datos" /><category term="Oracle" /><category term="2ºASIR" /><summary type="html"><![CDATA[🧩 Instalación]]></summary></entry><entry><title type="html">Plantilla y clonación enlazada KVM/QEMU + libvirt</title><link href="/posts/Creaci%C3%B3n-plantilla-y-clonaci%C3%B3n-enlazada/" rel="alternate" type="text/html" title="Plantilla y clonación enlazada KVM/QEMU + libvirt" /><published>2025-10-12T00:00:00+02:00</published><updated>2025-10-12T00:00:00+02:00</updated><id>/posts/Creaci%C3%B3n-plantilla-y-clonaci%C3%B3n-enlazada</id><content type="html" xml:base="/posts/Creaci%C3%B3n-plantilla-y-clonaci%C3%B3n-enlazada/"><![CDATA[<p><img src="https://pm1.aminoapps.com/6204/eae82405edfa2ffe445941d2e072ade2acfbd518_hq.jpg" alt="alt" /></p>
 
 <p>Estos apuntes han sido elaborados a partir de la práctica personal, con inspiración y guía en los materiales creados por <strong>José Domingo Muñoz</strong>, a quien agradezco por compartir sus conocimientos y experiencias en este tema.</p>
 
